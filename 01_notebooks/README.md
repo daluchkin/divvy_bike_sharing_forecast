@@ -7,7 +7,7 @@
 + [`02_Divvy_data_cleaning.ipynb`](./02_Divvy_data_cleaning.ipynb)
 + [`03_Divvy_exploratory_data_analysis.ipynb`](./03_Divvy_exploratory_data_analysis.ipynb)
 + [`04_Divvy_feature_engineering.ipynb`](./04_Divvy_feature_engineering.ipynb)
-+ Modeling:
++ Modeling & Validation:
     + [`05.1_Divvy_modeling_xgboost.ipynb`](./05.1_Divvy_modeling_xgboost.ipynb)
     + [`05.2_Divvy_modeling_rnn.ipynb`](./05.2_Divvy_modeling_rnn.ipynb)
     + [`05.3_Divvy_modeling_arimax.ipynb`](./05.3_Divvy_modeling_arimax.ipynb)
