@@ -226,7 +226,7 @@ def find_best_combo(train, test, target_name):
             tqdm.write(f'Informative Lags: {informative_lags} (threshold = 0.2)')
             
             tqdm.write('')
-            header = f"| {"N.":<2} | {'Combination':<70} | {"Transformation":<20} | {"Lags":<10} | {"MAE":<10} |"
+            header = f"| {"N.":<2} | {'Combination':<50} | {"Transformation":<20} | {"Lags":<10} | {"MAE":<10} |"
             tqdm.write('-' * len(header))
             tqdm.write(header)
             tqdm.write('-' * len(header))
@@ -261,7 +261,7 @@ def find_best_combo(train, test, target_name):
         else:
             trans_str = "-"
         lags_str = 'Yes' if lags else "No"
-        tqdm.write(f"| {(index+1):<2} | {', '.join(combo):<70} | {trans_str:<20} | {lags_str:<10} | {best_result["test_mae"]:<10.2f} |")
+        tqdm.write(f"| {(index+1):<2} | {', '.join(combo):<50} | {trans_str:<20} | {lags_str:<10} | {best_result["test_mae"]:<10.2f} |")
         tqdm.write('-' * len(header))
         
         combination_results.append({"index": index, "combination": combo, "models": results})
@@ -270,8 +270,8 @@ def find_best_combo(train, test, target_name):
     best_combo = list(best_models.keys())[0]
     best_model = list(best_models.values())[0]
     print(f"\nBest MAE on test set: {best_mae:.2f}")
-    print(f"Best combinations: {best_combo}\n")
-    print(f"Lags: {best_model['lags']}\n")
+    print(f"Best combinations: {best_combo}")
+    print(f"Lags: {best_model['lags']}")
     transformation = best_model['transformation']
     transformation = transformation if transformation != "boxcox" else transformation + f" (λ={best_model.get('lambda', 0):.4f})"
     print(f"Transformation: {transformation}\n")
