@@ -8,17 +8,17 @@ The Divvy bicycle sharing service in Chicago offers an environmentally friendly 
 > The data utilized in this project were sourced from the official public data provided by Divvy. All analysis, results, and insights presented in this notebook were conducted and formulated by Dmitry Luchkin. I declare that I am not affiliated with Divvy, Lyft, the City of Chicago, or any associated organizations. The views and interpretations expressed herein are solely my own and do not represent the positions or policies of these entities.
 
 ## Notebooks
-+ [`01_Divvy_initial_data_exploration.ipynb`](./01_Divvy_initial_data_exploration.ipynb)
-+ [`02_Divvy_data_cleaning.ipynb`](./02_Divvy_data_cleaning.ipynb)
-+ [`03_Divvy_exploratory_data_analysis.ipynb`](./03_Divvy_exploratory_data_analysis.ipynb)
-+ [`04_Divvy_feature_engineering.ipynb`](./04_Divvy_feature_engineering.ipynb)
++ [`01_Divvy_initial_data_exploration.ipynb`](./01_notebooks/01_Divvy_initial_data_exploration.ipynb)
++ [`02_Divvy_data_cleaning.ipynb`](./01_notebooks/02_Divvy_data_cleaning.ipynb)
++ [`03_Divvy_exploratory_data_analysis.ipynb`](./01_notebooks/03_Divvy_exploratory_data_analysis.ipynb)
++ [`04_Divvy_feature_engineering.ipynb`](./01_notebooks/04_Divvy_feature_engineering.ipynb)
 + Modeling & Validation:
-    + [`05.1_Divvy_modeling_xgboost.ipynb`](./05.1_Divvy_modeling_xgboost.ipynb)
-    + [`05.2_Divvy_modeling_rnn.ipynb`](./05.2_Divvy_modeling_rnn.ipynb)
-    + [`05.3_Divvy_modeling_arimax.ipynb`](./05.3_Divvy_modeling_arimax.ipynb)
-    + [`05.4_Divvy_modeling_mstl.ipynb`](./05.4_Divvy_modeling_mstl.ipynb)
-    + [`05.5_Divvy_modeling_ensemble.ipynb`](./05.5_Divvy_modeling_ensemble.ipynb)
-+ [`06_Divvy_forecasting.ipynb`](./06_Divvy_forecasting.ipynb)
+    + [`05.1_Divvy_modeling_xgboost.ipynb`](./01_notebooks/05.1_Divvy_modeling_xgboost.ipynb)
+    + [`05.2_Divvy_modeling_rnn.ipynb`](./01_notebooks/05.2_Divvy_modeling_rnn.ipynb)
+    + [`05.3_Divvy_modeling_arimax.ipynb`](./01_notebooks/05.3_Divvy_modeling_arimax.ipynb)
+    + [`05.4_Divvy_modeling_mstl.ipynb`](./01_notebooks/05.4_Divvy_modeling_mstl.ipynb)
+    + [`05.5_Divvy_modeling_ensemble.ipynb`](./01_notebooks/05.5_Divvy_modeling_ensemble.ipynb)
++ [`06_Divvy_forecasting.ipynb`](./01_notebooks/06_Divvy_forecasting.ipynb)
 
 
 ## Scope of the Project
