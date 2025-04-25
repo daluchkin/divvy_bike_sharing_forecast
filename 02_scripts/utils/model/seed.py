@@ -8,7 +8,7 @@ except ImportError:
     tf = None
 
 
-def set_seed(SEED: int = 42):
+def set_seed(SEED: int = 42, verbose=True):
     """
     Sets seeds across Python, NumPy, and TensorFlow for reproducibility.
 
@@ -30,4 +30,5 @@ def set_seed(SEED: int = 42):
         except AttributeError:
             pass
 
-    print(f"Seed {SEED} has been set.")
+    if verbose:
+        print(f"Seed {SEED} has been set.")

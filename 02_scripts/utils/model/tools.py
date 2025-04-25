@@ -52,31 +52,43 @@ def make_features(target_name):
     return cols
 
 
-def test_transformations(train, test, target_name, features, train_validate_func, add_lags, transformations=[None, "log", "log1p", "boxcox"], verbose=True):
+def test_transformations(train, test, target_name, features, train_validate_func, add_lags, 
+                         transformations=[None, "log", "log1p", "boxcox"], verbose=True):
     """
-    Tests multiple target transformations and evaluates model performance for each.
+    Evaluates the impact of multiple target transformations on model performance.
 
-    Applies different transformations (None, log, log1p, boxcox) to the target variable,
-    trains and validates a model using the provided train_validate_func, and compares
-    results based on MAE.
+    For each transformation type (e.g., None, log, log1p, boxcox), this function:
+        - Transforms the target variable accordingly.
+        - Calls a user-defined training and validation function to fit the model.
+        - Computes MAE on the test set using inverse-transformed predictions.
+        - Stores the trained model, forecast, MAE, and related metadata.
 
     Parameters:
         train (pd.DataFrame): Training dataset.
         test (pd.DataFrame): Testing dataset.
-        target_name (str): Name of the target variable.
-        train_validate_func (function): Function that accepts params (traain_set, test_set, features, target_name, transformation), 
-                                        trains and validates the model and returns (model, model_params, forecast, lambda) 
-                                        depending on transformation.
+        target_name (str): Name of the target variable to be predicted.
+        features (list[str]): List of feature column names to be used for training.
+        train_validate_func (function): Custom function to train and validate a model.
+            Must accept arguments:
+                (train_set, test_set, features, target_name, addlags, transformation, verbose)
+            and return:
+                (model, model_params, forecast (np.ndarray or pd.Series), lambda (float or None), lags)
+        add_lags (list[int] or None): Optional list of lag indices to be added as features.
         transformations (list): List of transformation types to test.
-            Example: [None, "log", "log1p", "boxcox"]
+            Supported values: [None, "log", "log1p", "boxcox"]
+        verbose (bool): Whether to print transformation progress and training logs.
 
     Returns:
-        dict: A dictionary with the target name as the key and results for each transformation
-              (indexed by integer) as values. Each result contains the model, parameters,
-              transformation type, test MAE, forecast, and lambda (if boxcox used).
+        dict: A dictionary with the `target_name` as the key and values as another dict,
+              where each inner key is an integer index and value is a dict containing:
+                - 'model': Trained model object
+                - 'params': Training metadata or hyperparameters
+                - 'transformation': Name of the transformation used
+                - 'test_mae': MAE on the test set (after inverse transform)
+                - 'test_forecast': Forecast on the test set in original scale
+                - 'lags': List of lag features used (or None)
+                - 'lambda': Box-Cox λ parameter (only present if transformation == "boxcox")
     """
-    
-    #cols = make_features(target_name)
     
     results = {}
     for  index, transformation in enumerate(transformations):
@@ -121,6 +133,7 @@ def get_best_result(results, target_name):
                             "transformation": @transformation,
                             "test_mae": @mae,
                             "test_forecast": @forecast,
+                            "lags": @lags,
                             "lambda": @lambda (is case of transformation = "boxcox")
                         }}}.
         target_name (str): Name of the target variable to search in.
