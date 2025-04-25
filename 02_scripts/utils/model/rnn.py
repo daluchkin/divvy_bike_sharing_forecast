@@ -1,3 +1,5 @@
+import itertools
+
 import numpy as np
 import pandas as pd
 
@@ -7,6 +9,11 @@ from tensorflow.keras.models import Model
 from tensorflow.keras.callbacks import ReduceLROnPlateau, EarlyStopping
 
 from sklearn.preprocessing import MinMaxScaler
+from sklearn.metrics import mean_absolute_error
+
+from tqdm.notebook import tqdm
+
+from utils.model.seed import set_seed
 
 
 def train_validate_rnn(train, test, y_feature_name, H, verbose=1):
@@ -110,3 +117,84 @@ def train_validate_rnn(train, test, y_feature_name, H, verbose=1):
     pred_y_inv = original_scaled[:, 0]  # extract only target column
 
     return (history, model, features, norm_encoder, pred_y_inv)
+
+
+def test_rnn_window_size(train, test, target_name, window_sizes, seeds):
+    """"
+    Evaluates the performance of an RNN/LSTM model across multiple window sizes and random seeds,
+    and selects the best-performing window size based on average MAE.
+
+    Parameters:
+        train (pd.DataFrame): Training dataset including the target and all necessary features.
+        test (pd.DataFrame): Test dataset with the same structure as the training set.
+        target_name (str): Name of the target variable to forecast.
+        window_sizes (list of int): List of window sizes (number of lag steps) to evaluate.
+        seeds (list of int): List of random seeds to assess robustness and stability.
+
+    Returns:
+        tuple:
+            best_window_size (int): The window size with the lowest average MAE.
+            best_preds (list of np.ndarray): List of predictions (one per seed) for the best window size.
+            fun_out (list of dict): Detailed results for each window size, containing:
+                - 'window_size': int, the window size tested
+                - 'mae_mean': float, mean MAE across seeds
+                - 'mae_std': float, standard deviation of MAE
+                - 'forecast_mean': np.ndarray, average forecast across seeds
+    """
+    rnn_forecasts = {ws: {"mae": [], "y_pred": []} for ws in window_sizes}
+    param_grid = list(itertools.product(seeds, window_sizes))
+    i = 0
+    for seed, window_size in tqdm(param_grid):
+
+        if i == 0:
+            tqdm.write("")
+            tqdm.write(f"BEST RNN/LSTM WINDOW SIZE FOR `{target_name}`")
+            tqdm.write('')
+            header = f"| {"N.":<2} | {'Random Seed':<20} | {"Window Size":<20} | {"MAE":<10} |"
+            tqdm.write('-' * len(header))
+            tqdm.write(header)
+            tqdm.write('-' * len(header))
+        
+        set_seed(seed, verbose=False)
+        _, _, _, _, rnn_pred_y = train_validate_rnn(train, test, target_name, H=window_size, verbose=0)
+        mae = mean_absolute_error(test[target_name], rnn_pred_y)
+        rnn_forecasts[window_size]["mae"].append(mae)
+        rnn_forecasts[window_size]["y_pred"].append(rnn_pred_y)
+
+        tqdm.write(f"| {(i+1):<2} | {seed:<20} | {window_size:<20} | {mae:<10.2f} |")
+        tqdm.write('-' * len(header))
+        
+        i += 1
+
+    print("\nResults:\n")
+    header = f"   | {"Window Size":<20} | {"Mean MAE":<30} |"
+    tqdm.write('-' * len(header))
+    tqdm.write(header)
+    tqdm.write('-' * len(header))
+
+    fun_out = []
+    
+    for window_size, item in rnn_forecasts.items():
+        mean_mae = np.mean(item["mae"])
+        mae_std = np.std(item["mae"])
+        mean_y_pred = np.mean(item["y_pred"], axis=0)
+        
+        fun_out.append({"window_size": window_size,
+                        "mae_mean": mean_mae,
+                        "mae_std": mae_std,
+                        "forecast_mean": mean_y_pred})
+
+    best_window_size = min(fun_out, key=lambda x: x["mae_mean"])["window_size"]
+
+    for item in sorted(fun_out, key=lambda x: x["mae_mean"]):
+        mark = " "
+        if item["window_size"] == best_window_size:
+            mark = "*"
+        mae = f"{item["mae_mean"]:.2f}±{item["mae_std"]:.2f}"
+        print(f" {mark} | {item["window_size"]:<20} | {mae:<30} |")
+        print("-" * len(header))
+
+    print(f"\nBest window size for {target_name}: {best_window_size}\n")
+    best_preds = rnn_forecasts[best_window_size]["y_pred"]
+
+    return best_window_size, best_preds, fun_out

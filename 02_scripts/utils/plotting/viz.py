@@ -280,3 +280,34 @@ def plot_combos(combo, target_name):
     
     plt.tight_layout()
     plt.show()
+
+
+def plot_window_size(results, target_name):
+    """
+    Plot the mean absolute error (MAE) with error bars for different window sizes of an RNN forecast.
+
+    Parameters
+    ----------
+    results : list of dict
+        Each dict should contain:
+        - "window_size" (int or float): The input window length used in the RNN.
+        - "mae_mean" (float): The mean MAE computed over the test folds or runs.
+        - "mae_std" (float): The standard deviation of the MAE.
+    target_name : str
+        Human-readable name of the target variable, used in the plot title.
+
+    Returns
+    -------
+    None
+        Displays a Matplotlib plot showing the MAE means with error bars for each window size.
+    """
+    plt.figure(figsize=(8, 4))
+    plt.errorbar([str(item["window_size"]) for item in results], [item["mae_mean"] for item in results], 
+                 yerr=[item["mae_std"] for item in results], fmt='o', 
+                 capsize=5, color='blue', ecolor='gray', elinewidth=2)
+    plt.title(f"RNN: The best window size selection for {target_name}")
+    plt.xlabel("Window Size")
+    plt.ylabel("Mean MAE")
+    plt.grid(True)
+    plt.tight_layout()
+    plt.show()
