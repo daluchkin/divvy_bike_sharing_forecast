@@ -29,42 +29,40 @@ def train_validate_xgb(train, test, features, target_name, addlags, transformati
     predictive performance.
 
     Parameters:
-    ----------
-    train : pandas.DataFrame
-        Training dataset containing the target and feature columns.
-
-    test : pandas.DataFrame
-        Test dataset used for final validation.
-
-    features : list of str
-        List of column names to be used as features.
-
-    target_name : str
-        The name of the target variable column.
-
-    transformation (str or None): Optional transformation to apply to `target_name`.
-            Supported values:
-                - None: no transformation
-                - "log": apply np.log
-                - "log1p": apply np.log1p
-                - "boxcox": apply scipy.stats.boxcox
+        train : pandas.DataFrame
+            Training dataset containing the target and feature columns.
+    
+        test : pandas.DataFrame
+            Test dataset used for final validation.
+    
+        features : list of str
+            List of column names to be used as features.
+    
+        target_name : str
+            The name of the target variable column.
+    
+        transformation (str or None): Optional transformation to apply to `target_name`.
+                Supported values:
+                    - None: no transformation
+                    - "log": apply np.log
+                    - "log1p": apply np.log1p
+                    - "boxcox": apply scipy.stats.boxcox
 
     Returns:
-    -------
-    best_model : xgboost.XGBRegressor
-        The trained XGBoost model with the best parameters.
-
-    predictors : pandas.Index
-        The list of feature column names used in training.
-
-    best_params : dict
-        The best set of hyperparameters found during grid search.
-
-    y_pred : numpy.ndarray
-        Predicted values for the test set in original scaling.
-
-    lambda : float
-        (in case of transformation = "boxcox") Estimated Box-Cox lambda that best normalizes the data.
+        best_model : xgboost.XGBRegressor
+            The trained XGBoost model with the best parameters.
+    
+        predictors : pandas.Index
+            The list of feature column names used in training.
+    
+        best_params : dict
+            The best set of hyperparameters found during grid search.
+    
+        y_pred : numpy.ndarray
+            Predicted values for the test set in original scaling.
+    
+        lambda : float
+            (in case of transformation = "boxcox") Estimated Box-Cox lambda that best normalizes the data.
     """
     # Upd: 1
     if transformation in ["log", "boxcox"] and (np.any(train[target_name] <= 0) or np.any(test[target_name] <= 0)):

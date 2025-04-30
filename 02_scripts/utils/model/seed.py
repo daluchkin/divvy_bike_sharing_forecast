@@ -12,10 +12,9 @@ def set_seed(SEED: int = 42, verbose=True):
     """
     Sets seeds across Python, NumPy, and TensorFlow for reproducibility.
 
-    Parameters
-    ----------
-    SEED : int
-        Random seed to set globally.
+    Parameters:
+        SEED : int
+            Random seed to set globally.
     """
     os.environ['PYTHONHASHSEED'] = str(SEED)
     random.seed(SEED)

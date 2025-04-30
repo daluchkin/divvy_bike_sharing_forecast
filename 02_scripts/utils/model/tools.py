@@ -8,20 +8,18 @@ def add_lags(df, y_col_name, lags=[1, 7, 12, 30]):
     Adds lag features to a time series column in a DataFrame.
 
     Parameters:
-    ----------
-    df : pandas.DataFrame
-        The DataFrame containing the time series data.
+        df : pandas.DataFrame
+            The DataFrame containing the time series data.
 
-    y_col_name : str
-        The name of the target column to generate lags for.
-
-    lags : list of int, optional (default = [1, 7, 12, 30])
-        A list of lag intervals (in number of time steps) to create lag features for.
+        y_col_name : str
+            The name of the target column to generate lags for.
+    
+        lags : list of int, optional (default = [1, 7, 12, 30])
+            A list of lag intervals (in number of time steps) to create lag features for.
 
     Returns:
-    -------
-    df : pandas.DataFrame
-        The DataFrame with new lag columns added, named as 'lag_<n>'.
+        df : pandas.DataFrame
+            The DataFrame with new lag columns added, named as 'lag_<n>'.
     """
     
     for lag in lags:

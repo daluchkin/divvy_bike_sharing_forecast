@@ -2,6 +2,8 @@
 
 # Divvy: Bike Sharing Forecast
 
+Status: __In progress__\
+
 The Divvy bicycle sharing service in Chicago offers an environmentally friendly and convenient transportation option, supported by a public-private partnership with Lyft. With a broad network of docking stations and a fleet of standard and electric bicycles, Divvy serves a diverse range of users. This project focuses on analyzing ride data to forecast the number of rides and to understand the impact of external factors such as weather conditions and public holidays. By examining these variables, the project aims to identify patterns in usage, determine peak times, and evaluate the effects of different conditions on ride frequency. The insights gained will assist in optimizing operations, planning for demand fluctuations, and enhancing overall service delivery, contributing to the promotion of sustainable urban mobility in Chicago.
 
 > **Attention**
