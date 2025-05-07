@@ -18,8 +18,7 @@ The Divvy bicycle sharing service in Chicago offers an environmentally friendly 
     + [`05.1_Divvy_modeling_xgboost.ipynb`](./01_notebooks/05.1_Divvy_modeling_xgboost.ipynb)
     + [`05.2_Divvy_modeling_rnn.ipynb`](./01_notebooks/05.2_Divvy_modeling_rnn.ipynb)
     + [`05.3_Divvy_modeling_arimax.ipynb`](./01_notebooks/05.3_Divvy_modeling_arimax.ipynb)
-    + [`05.4_Divvy_modeling_mstl.ipynb`](./01_notebooks/05.4_Divvy_modeling_mstl.ipynb)
-    + [`05.5_Divvy_modeling_ensemble.ipynb`](./01_notebooks/05.5_Divvy_modeling_ensemble.ipynb)
+    + [`05.4_Divvy_modeling_ensemble.ipynb`](./01_notebooks/05.4_Divvy_modeling_ensemble.ipynb)
 + [`06_Divvy_forecasting.ipynb`](./01_notebooks/06_Divvy_forecasting.ipynb)
 
 
