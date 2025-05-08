@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 from sklearn.metrics import mean_absolute_error
+import pickle
 
 
 def add_lags(df, y_col_name, lags=[1, 7, 12, 30]):
@@ -194,3 +195,17 @@ def get_best_model(combos, target_name):
     return min_val, results
 
 
+def load_dump(file_path):
+    """
+    Load a pickled object from a binary file.
+
+    Parameters:
+        file_path (str): Path to the .pkl or .dump file containing a pickled Python object.
+
+    Returns:
+        Any: The Python object that was serialized in the file.
+    """
+    with open(file_path, "rb") as f:
+        models_dump = pickle.load(f)
+
+    return models_dump
