@@ -64,7 +64,6 @@ def train_validate_xgb(train, test, features, target_name, addlags, transformati
         lambda : float
             (in case of transformation = "boxcox") Estimated Box-Cox lambda that best normalizes the data.
     """
-    # Upd: 1
     if transformation in ["log", "boxcox"] and (np.any(train[target_name] <= 0) or np.any(test[target_name] <= 0)):
         raise ValueError(f"{transformation} transformation requires all {target_name} in training and test sets > 0")
 
@@ -77,10 +76,8 @@ def train_validate_xgb(train, test, features, target_name, addlags, transformati
         train_transformed[target_name] = np.log1p(train_transformed[target_name])
     elif transformation == "boxcox":
         train_transformed[target_name], lambda_bc = boxcox(train_transformed[target_name])
-
-    # end Upd 1
-    
-    train_xgb = pd.DataFrame(train_transformed[features]) # Upd 1
+        
+    train_xgb = pd.DataFrame(train_transformed[features]) 
     
     if addlags is not None:
         train_xgb = add_lags(train_xgb, target_name, lags=addlags)
@@ -109,8 +106,6 @@ def train_validate_xgb(train, test, features, target_name, addlags, transformati
         print(f"Best MAE ({target_name}) on training set: {abs(grid_search.best_score_):.2f}")    
 
     # Validate on test set
-
-    # Upd 1
     test_transformed = test.copy()
 
     if transformation == "log":
@@ -119,8 +114,6 @@ def train_validate_xgb(train, test, features, target_name, addlags, transformati
         test_transformed[target_name] = np.log1p(test_transformed[target_name])
     elif transformation == "boxcox":
         test_transformed[target_name] = boxcox(test_transformed[target_name], lmbda=lambda_bc)
-
-    # end Upd 1
     
     test_xgb = pd.DataFrame(test_transformed[features])
     
@@ -141,17 +134,13 @@ def train_validate_xgb(train, test, features, target_name, addlags, transformati
     if verbose:
         print(f"MAE on test set:  {test_mae:.2f}")
 
-    # Upd 1: invert prediction
-    
     if transformation == "log":
         y_pred = np.exp(y_pred)
     elif transformation == "log1p":
         y_pred = np.expm1(y_pred)
     elif transformation == "boxcox":
         y_pred = inv_boxcox(y_pred, lambda_bc)
-    
-    # end Upd 1
-    
+
     return (best_model,            
             grid_search.best_params_, 
             y_pred,

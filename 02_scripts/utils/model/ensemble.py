@@ -43,7 +43,7 @@ def weighted_ensemble_many(predictions, errors, use_squared_weights=True, verbos
     stacked = np.vstack(predictions)
     final_forecast = np.dot(weights, stacked)
     
-    return final_forecast
+    return final_forecast, weights
     
 
 def compare_lists_strict(a, b):
@@ -116,14 +116,15 @@ def find_better_ensemble(test, target_name, forecasts, errors, verbose=True):
         combo_list = list(combo)
         if verbose:
             print(f"\nModels: {combo_list}")
-        ensemble_forecast = weighted_ensemble_many(forecasts.loc[target_name, combo_list], 
+        ensemble_forecast, ensemble_weights = weighted_ensemble_many(forecasts.loc[target_name, combo_list], 
                                                    errors.loc[target_name, combo_list],
                                                   verbose=verbose)
         ensemble_mae = mean_absolute_error(test[target_name], ensemble_forecast)
         if verbose:
             print(f"MAE: {ensemble_mae}")
         results[combo] = {"mae": ensemble_mae,
-                          "forecast": ensemble_forecast}
+                          "forecast": ensemble_forecast,
+                          "weights": ensemble_weights}
 
     if verbose:
         print("\n")
@@ -137,5 +138,5 @@ def find_better_ensemble(test, target_name, forecasts, errors, verbose=True):
         print("\n")
         print(f"The best ensemble {best_combo} with MAE = {best_item["mae"]}\n")
 
-    return (best_combo, best_item["mae"], best_item["forecast"])
+    return (best_combo, best_item["mae"], best_item["forecast"], best_item["weights"])
     
